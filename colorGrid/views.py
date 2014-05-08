@@ -1,3 +1,4 @@
+from django.shortcuts import render
 def default(request):
-    pass
+    return render(request, 'index.html')
 
