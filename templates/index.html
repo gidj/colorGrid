@@ -6,21 +6,28 @@
 
 {% block content %}
 
-<div>
-    <p>
-        Please enter the number of rows and columns of the grid to be generated:
-    </p>
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <h1>
+                    Please enter the number of rows and columns of the grid to be generated:
+                </h1>
+                <form role="form" method="get" action="/grid/">
+                    <div class="form-group">
+                        <input placeholder="More than 1, Less than many" name="number" type="text" class="form-control" id="number" />
+                    </div>
+                    <button type="submit" class="btn btn-block btn-default">Generate!</button>
+                </form>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
 
 </div>
 
-<form method="post" action="grid">
-    {% csrf_token %}
-    <dl>
-        <dt><label for="grid_num">Number (greater than 1):</label></dt>
-        <dd><input id="grid_num" type="text" name="grid_num" /></dd>
-        <dt><input type="submit" value="Generate!" /></dt>
-    </dl>
-</form>
 
 
 {% endblock %}
