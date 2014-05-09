@@ -6,15 +6,17 @@
 
 {% block content %}
 <table>
-{% for row in grid %}
-    <tr id="{{ forloop.counter }}">
-        {% for cell in row %}
-        <td id="{{ forloop.counter }}">
-            {{ cell }}
-        </td>
+    <tbody id="grid">
+        {% for row in grid %}
+        <tr id="{{ forloop.counter }}">
+            {% for cell in row %}
+            <td id="{{ forloop.counter }}">
+                {{ cell }}
+            </td>
+            {% endfor %}
+        </tr>
         {% endfor %}
-    </tr>
-{% endfor %}
+    </tbody>
 </table>
 
 <button onclick="print_arr(arr)">Check Array</button>
@@ -25,7 +27,6 @@
     for(i = 0; i < arr.length; i++) {
         for(j = 0; j < arr[i].length; j++) {
             octal_num = arr[i][j];
-
 
             r = parseInt(octal_num.slice(0, 3), 8);
             g = parseInt(octal_num.slice(3, 6), 8);
@@ -41,11 +42,39 @@
                 b = b - 256;
             }
             
-            rgb = r.toString(16) + g.toString(16) + b.toString(16);
+            r = r.toString(16);
+            g = g.toString(16);
+            b = b.toString(16);
 
-            arr[i][j] = rgb
+            if(r.length < 2) {
+                r = '0' + r;
+            }
+            if(g.length < 2) {
+                g = '0' + g;
+            }
+            if(b.length < 2) {
+                b = '0' + b;
+            }
+
+            rgb = r + g + b;
+
+            arr[i][j] = rgb.toUpperCase();
         }
     }
+
+    grid = document.getElementById('grid');
+    rows = grid.children;
+
+    for(i = 0; i < rows.length; i++) {
+        cells = rows[i].children
+        for(j = 0; j < cells.length; j++) {
+            cells[j].setAttribute('bgcolor', arr[i][j]);
+        }
+    }
+
+
+
+
 
     function octal2hexstring(octstring) {
         arr = [];
