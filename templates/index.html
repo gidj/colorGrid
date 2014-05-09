@@ -22,12 +22,45 @@
 <script src="/static/js/grid.js"></script>
 <script type="text/javascript">
     var arr = {{ grid|safe }}
+    for(i = 0; i < arr.length; i++) {
+        for(j = 0; j < arr[i].length; j++) {
+            octal_num = arr[i][j];
+            r = parseInt(octal_num.slice(0, 3), 8);
+            g = parseInt(octal_num.slice(3, 6), 8);
+            b = parseInt(octal_num.slice(6, 9), 8);
+
+            if(r > 255) { 
+                r = r - 256;
+            }
+            if(g > 255) { 
+                g = g - 256;
+            }
+            if(b > 255) { 
+                b = b - 256;
+            }
+            
+            rgb = r.toString(16) + g.toString(16) + b.toString(16);
+
+            arr[i][j] = rgb
+        }
+    }
+
+    function octal2hexstring(string){
+    }
+
     function print_arr(a) {
         body = document.body;
         para = document.createElement('p');
         para.appendChild(document.createTextNode(a));
 
         body.appendChild(para);
+    }
+
+    
+    function octalstr_to_hexstring(str) {
+        octnum = parseInt(str, 8);
+        hexstr = octnum.toString(16);
+        return hexstr;
     }
     
 </script>
