@@ -5,15 +5,17 @@
 {% endblock %}
 
 {% block content %}
-{% for row in grid %}
+
 <table>
-    <tr>
+{% for row in grid %}
+    <tr id="{{ forloop.counter }}">
         {% for cell in row %}
-        <td>
+        <td id="{{ forloop.counter }}">
             {{ cell }}
         </td>
         {% endfor %}
     </tr>
-</table>
 {% endfor %}
+</table>
+
 {% endblock %}
