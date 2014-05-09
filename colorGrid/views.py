@@ -5,7 +5,8 @@ def index(request):
     return render(request, 'index.html')
 
 def grid(request):
-    n = 5;
+    n = 3;
+
     grid = []
     for row in xrange(n):
         r = []
