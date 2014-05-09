@@ -1,0 +1,155 @@
+{% extends 'base.html' %} 
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="grid-container">
+            <table>
+                <tbody id="grid">
+                    <!--Generate a grid, with each row having successively increasing-->
+                    <!--id values and each cell in each row having successively-->
+                    <!--increasing id values, indexed from 0.-->
+                    {% for row in grid %}
+                    <tr id="{{ forloop.counter }}">
+                        {% for cell in row %}
+                        <td id="{{ forloop.counter }}">
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        <div class="buttons">
+            <button class="btn btn-default "onclick="rotate_grid_and_paint(grid)">Rotate Grid</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/grid.js"></script>
+<script type="text/javascript">
+
+    // These are the random numbers generated from the Django view
+var grid = {{ grid|safe }}
+
+// This routine convertes them into valid RGB Hex values
+for(i = 0; i < grid.length; i++) {
+    for(j = 0; j < grid[i].length; j++) {
+        oct = grid[i][j];
+
+        r = parseInt(oct.slice(0, 3), 8);
+        if(r > 255) { 
+            r = r - 256;
+        }
+        r = r.toString(16);
+        if(r.length < 2) {
+            r = '0' + r;
+        }
+
+        g = parseInt(oct.slice(3, 6), 8);
+        if(g > 255) { 
+            g = g - 256;
+        }
+        g = g.toString(16);
+        if(g.length < 2) {
+            g = '0' + g;
+        }
+
+        b = parseInt(oct.slice(6, 9), 8);
+        if(b > 255) { 
+            b = b - 256;
+        }
+        b = b.toString(16);
+        if(b.length < 2) {
+            b = '0' + b;
+        }
+        rgb = r + g + b;
+
+        grid[i][j] = rgb.toUpperCase();
+    }
+}
+
+// Set the height of each td element to be a number such that each td is a square
+height = (600 / grid.length);
+cell_height = height.toString() + 'px';
+
+grid_data = document.getElementsByTagName('td');
+for (z = 0; z < grid_data.length; z++) {
+    grid_data[z].style.height = cell_height;
+}
+
+paint_colors(grid);
+
+// --------------------------------------
+
+function rotate_grid_and_paint() {
+    grid = rotate_grid(grid);
+    paint_colors(grid);
+}
+
+function rotate_grid(arr) {
+    // initialize a new array to have the right number of rows
+    newarr = []
+        for(i = 0; i < arr.length; i++) {
+            newarr[i] = [];
+        }
+
+    // calculate the center element, which will help determin the rotated cell
+    center = (arr.length - 1) / 2;
+
+    // based on where the current cell indices are, calculate its rotated indices.
+    // Then, assign the value of the rotated cell.
+    for (i = 0; i < arr.length; i++) {
+        for (j = 0; j < arr.length; j++) {
+            if (i < center) {
+                if (j < i) {
+                    newarr[i-1][j] = arr[i][j];
+                } else if (j < (arr.length - 1 - i)) {
+                    newarr[i][j+1] = arr[i][j];
+                } else {
+                    newarr[i+1][j] = arr[i][j];
+                }
+            } else if (i == center) {
+                if (j < center) {
+                    newarr[i-1][j] = arr[i][j];
+                } else if (j > center) {
+                    newarr[i+1][j] = arr[i][j];
+                } else {
+                    newarr[i][j] = arr[i][j];
+                }
+            } else {
+                if (j < (arr.length - i)) {
+                    newarr[i-1][j] = arr[i][j];
+                } else if (j <= i) {
+                    newarr[i][j-1] = arr[i][j];
+                } else {
+                    newarr[i+1][j] = arr[i][j];
+                }
+            }
+        }
+    }
+    return newarr;
+}
+
+function paint_colors(arr) {
+    // Just a simple function that sets the 'bgcolor' attribute of each td
+    // element based on which row it is in and what its id is. Each td maps
+    // directly to a number found in arr.
+    g = document.getElementById('grid');
+    rows = g.children;
+
+    for(i = 0; i < rows.length; i++) {
+        cells = rows[i].children
+            for(j = 0; j < cells.length; j++) {
+                cells[j].setAttribute('bgcolor', arr[i][j]);
+            }
+    }
+}
+
+</script>
+
+{% endblock %}
