@@ -23,6 +23,8 @@ TEMPLATE_DIRS = (
 STATICFILES_DIRS = (
     PROJECT_DIR.child('assets'),
 )
+STATIC_ROOT = PROJECT_DIR.child('static')
+STATIC_URL = '/static/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -87,7 +89,3 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
-
-STATIC_URL = '/static/'
