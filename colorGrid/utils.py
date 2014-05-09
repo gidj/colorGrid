@@ -1,5 +1,10 @@
 import random
+
 def random_octal_str(digits):
+    """ Takes a number of digits and generates a random octal number and
+    returns it as a string. If the generated number has fewer than the given
+    number of digits, it is padded with zeros at the front """
+
     n = "" 
     for i in xrange(digits):
         n += '7'
