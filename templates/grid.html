@@ -36,7 +36,9 @@
     // These are the random numbers generated from the Django view
 var grid = {{ grid|safe }}
 
-// This routine convertes them into valid RGB Hex values
+// This routine converts them into valid RGB Hex values; I tried to pull
+// it into another function and eliminate redundancy, but for some reason
+// the string handling would not work.
 for(i = 0; i < grid.length; i++) {
     for(j = 0; j < grid[i].length; j++) {
         oct = grid[i][j];
@@ -76,21 +78,27 @@ for(i = 0; i < grid.length; i++) {
 // Set the height of each td element to be a number such that each td is a square
 height = (600 / grid.length);
 cell_height = height.toString() + 'px';
-
 grid_data = document.getElementsByTagName('td');
 for (z = 0; z < grid_data.length; z++) {
     grid_data[z].style.height = cell_height;
 }
 
+// color each td element with its associated background color derived from the
+// random numbers from Django
 paint_colors(grid);
 
 // --------------------------------------
 
+// Just what it sounds like
 function rotate_grid_and_paint() {
     grid = rotate_grid(grid);
     paint_colors(grid);
 }
 
+// Creates a new grid, populated with the same numbers as the given arr
+// parameter--except rotated one cell in the clockwise direction. This is
+// accomplished by determining the indices of the cell that each value should
+// move to, and copying them over. 
 function rotate_grid(arr) {
     // initialize a new array to have the right number of rows
     newarr = []
@@ -135,10 +143,10 @@ function rotate_grid(arr) {
     return newarr;
 }
 
+// Just a simple function that sets the 'bgcolor' attribute of each td
+// element based on which row it is in and what its id is. Each td maps
+// directly to a number found in arr.
 function paint_colors(arr) {
-    // Just a simple function that sets the 'bgcolor' attribute of each td
-    // element based on which row it is in and what its id is. Each td maps
-    // directly to a number found in arr.
     g = document.getElementById('grid');
     rows = g.children;
 
