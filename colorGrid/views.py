@@ -3,7 +3,9 @@ from utils import random_octal_str
 
 def index(request):
     """ Just render the form asking for the number of cells to generate """
-    return render(request, 'index.html')
+    context = {
+            'title': 'Grid',}
+    return render(request, 'index.html', context)
 
 def grid(request):
     """ If a number is submitted via the form at index, use it; otherwise,
